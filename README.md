@@ -352,7 +352,37 @@ Boa sorte e bom desafio! 🚀
 
 ---
 
-# 📊 Minha Solução — Eduardo Da Silva Duarte
+
+# 📊 Minha Solução — Eduardo Duarte
+
+## Sobre este projeto
+
+Este projeto foi desenvolvido como solução para o desafio técnico de estágio em Análise de
+Dados da Sefaz Maceió. O objetivo foi construir um pipeline completo de tratamento e análise
+dos dados do FINBRA/Siconfi, desde a extração dos arquivos até a geração de indicadores e
+visualizações.
+
+## Estrutura do projeto
+.
+├── dados_compactos/                # arquivos .zip originais, por ano (fornecidos no desafio)
+├── dados_extraidos/                 # CSVs descompactados (gerado, não versionado)
+├── descompactar.py                  # extrai os zips de dados_compactos/ para dados_extraidos/
+├── consolidar.py                    # le, consolida e classifica os dados; gera o .parquet
+├── analise.py                       # calcula indicadores e gera os graficos
+├── grafico_ranking_capitais.png     # gerado por analise.py (versionado)
+├── grafico_evolucao_maceio.png      # gerado por analise.py (versionado)
+├── requirements.txt
+├── .gitignore
+└── README.md
+
+## Pipeline do projeto
+
+1. **Descompactação** dos arquivos ZIP (`descompactar.py`)
+2. **Consolidação** dos 6 CSVs em um único DataFrame (`consolidar.py`)
+3. **Classificação** entre função, subfunção e contas agregadas
+4. **Exportação** para Parquet (base otimizada para consultas)
+5. **Cálculo** da Taxa de Execução Financeira (`analise.py`)
+6. **Geração** dos gráficos de ranking e evolução temporal
 
 ## Como rodar o projeto
 
@@ -407,6 +437,7 @@ Se aparecer um erro de `OSError` mencionando "Long Path" durante o `pip install`
 - **Parquet** foi escolhido em vez de reler os 6 CSVs a cada análise. O arquivo consolidado (50.334 linhas, 9 colunas) ocupa apenas 436KB em Parquet — uma fração do tamanho somado dos CSVs originais — e a leitura fica muito mais rápida por ser um formato colunar comprimido.
 - Os CSVs foram lidos com `encoding="latin-1"`, `sep=";"` e `decimal=","`, pulando as 3 primeiras linhas de metadados, conforme o padrão do Siconfi.
 - Criei uma coluna `tipo_conta` que classifica cada linha em `funcao`, `subfuncao`, `total_agregado` ou `agregado_subfuncoes_restantes`, para evitar somar valores em duplicidade nas análises (por exemplo, não misturar uma função com os totais intraorçamentários).
+- Optei por Parquet + pandas em vez de DuckDB — para o volume de dados deste desafio (~50 mil linhas), pandas foi suficiente em performance, mas DuckDB seria uma boa evolução caso o volume de dados crescesse.
 
 ## Qualidade e completude dos dados
 
