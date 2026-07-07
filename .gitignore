@@ -38,14 +38,6 @@ __pycache__/
 Thumbs.db
 desktop.ini
 
-# ==========================================================================
-# IMPORTANTE: os arquivos .zip precisam ser descompactados (por código).
-#
-# Sobre as SAÍDAS do processamento (dados extraídos, parquet, gráficos):
-# fica a seu critério versionar ou não. Para NÃO subir os arquivos
-# intermediários/gerados, descomente as linhas abaixo:
-#
-# dados_extraidos/
+dados_extraidos/
 # *.parquet
 # saidas/
-# ==========================================================================
