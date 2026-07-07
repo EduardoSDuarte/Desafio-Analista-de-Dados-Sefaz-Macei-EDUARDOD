@@ -353,19 +353,57 @@ Boa sorte e bom desafio! 🚀
 
 ---
 
-# 📊 Minha Solução — Eduardo Duarte
+---
+
+# 📊 Minha Solução — Eduardo Da Silva Duarte
 
 ## Como rodar o projeto
 
+### 1. Clonar o repositório
+
+```bash
+git clone <url-do-seu-fork>
+cd Desafio-Analista-de-Dados-Sefaz-Macei-EDUARDOD
+```
+
+### 2. Criar e ativar o ambiente virtual
+
+**Windows (PowerShell):**
 ```powershell
 python -m venv venv
 venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-
-python descompactar.py    # extrai os zips de dados_compactos/ para dados_extraidos/
-python consolidar.py      # consolida os CSVs e gera finbra_consolidado.parquet
-python analise.py         # calcula indicadores e gera execucao_financeira.parquet
 ```
+
+**Mac/Linux:**
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+### 3. Instalar as dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Rodar o pipeline, na ordem
+
+```bash
+python descompactar.py   # extrai os zips de dados_compactos/ para dados_extraidos/
+python consolidar.py     # consolida os CSVs, classifica funcao/subfuncao, gera finbra_consolidado.parquet
+python analise.py        # calcula a taxa de execucao financeira e gera os graficos (.png)
+```
+
+### O que esperar como saída
+
+- `dados_extraidos/` — CSVs descompactados por ano (gerado, não versionado)
+- `finbra_consolidado.parquet` — base consolidada (gerado, não versionado)
+- `execucao_financeira.parquet` — indicadores calculados (gerado, não versionado)
+- `grafico_ranking_capitais.png` e `grafico_evolucao_maceio.png` — gráficos (versionados, já estão no repositório)
+
+### Nota sobre Windows
+
+Se aparecer um erro de `OSError` mencionando "Long Path" durante o `pip install` (comum com o pacote `jupyterlab`), é necessário habilitar o suporte a caminhos longos do Windows. Veja: https://pip.pypa.io/warnings/enable-long-paths
 
 ## Escolhas técnicas
 
@@ -392,6 +430,8 @@ As capitais com melhor execução financeira (maior proporção do que foi empen
 
 **Maceió aparece na 15ª posição, com 90,35%** de execução média — uma posição intermediária, nem entre as melhores nem entre as piores capitais analisadas.
 
+![Ranking de execução financeira por capital](grafico_ranking_capitais.png)
+
 ### Evolução de Maceió (2020–2024)
 
 | Ano | Maceió | Média das capitais | Diferença |
@@ -403,6 +443,8 @@ As capitais com melhor execução financeira (maior proporção do que foi empen
 | 2024 | 87,14% | 91,77% | -4,63 |
 
 Maceió ficou **acima da média das capitais em 3 dos 5 anos** comparáveis (2020, 2022, 2023), com o melhor desempenho relativo em 2022 (+5,57 pontos) e o pior em 2024 (-4,63 pontos). Não há uma tendência clara e contínua de melhora ou piora — a taxa oscila de forma considerável ano a ano.
+
+![Evolução de Maceió vs média das capitais](grafico_evolucao_maceio.png)
 
 ### Observação sobre 2025
 
