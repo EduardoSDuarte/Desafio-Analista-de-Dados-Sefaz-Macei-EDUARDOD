@@ -349,3 +349,66 @@ Entre no nosso grupo do WhatsApp para tirar dúvidas, trocar dicas e fazer netwo
 
 Boa sorte e bom desafio! 🚀
 **José Gonçalves Jr - Head de Dados - Sefaz Maceió**
+
+
+---
+
+# 📊 Minha Solução — Eduardo Duarte
+
+## Como rodar o projeto
+
+```powershell
+python -m venv venv
+venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+python descompactar.py    # extrai os zips de dados_compactos/ para dados_extraidos/
+python consolidar.py      # consolida os CSVs e gera finbra_consolidado.parquet
+python analise.py         # calcula indicadores e gera execucao_financeira.parquet
+```
+
+## Escolhas técnicas
+
+- **Parquet** foi escolhido em vez de reler os 6 CSVs a cada análise. O arquivo consolidado (50.334 linhas, 9 colunas) ocupa apenas 436KB em Parquet — uma fração do tamanho somado dos CSVs originais — e a leitura fica muito mais rápida por ser um formato colunar comprimido.
+- Os CSVs foram lidos com `encoding="latin-1"`, `sep=";"` e `decimal=","`, pulando as 3 primeiras linhas de metadados, conforme o padrão do Siconfi.
+- Criei uma coluna `tipo_conta` que classifica cada linha em `funcao`, `subfuncao`, `total_agregado` ou `agregado_subfuncoes_restantes`, para evitar somar valores em duplicidade nas análises (por exemplo, não misturar uma função com os totais intraorçamentários).
+
+## Qualidade e completude dos dados
+
+Antes de qualquer comparação entre anos, verifiquei quantas capitais reportaram dados em cada ano:
+
+| Ano | Capitais reportando |
+|---|---|
+| 2020–2024 | 26 (completo) |
+| 2025 | 11 (incompleto) |
+
+Por esse motivo, **2025 foi excluído das comparações temporais** — incluí-lo junto com os demais anos distorceria qualquer média ou tendência.
+
+## Principais achados
+
+### Taxa de Execução Financeira por capital (média entre funções e anos completos)
+
+As capitais com melhor execução financeira (maior proporção do que foi empenhado que efetivamente foi pago) foram **Recife (97,4%)** e **Belém (97,1%)**. No outro extremo, **Porto Velho (80,2%)** e **Macapá (80,6%)** tiveram as menores taxas, indicando que uma parcela maior do orçamento dessas capitais fica registrada como "restos a pagar" de um ano para o outro.
+
+**Maceió aparece na 15ª posição, com 90,35%** de execução média — uma posição intermediária, nem entre as melhores nem entre as piores capitais analisadas.
+
+### Evolução de Maceió (2020–2024)
+
+| Ano | Maceió | Média das capitais | Diferença |
+|---|---|---|---|
+| 2020 | 92,75% | 90,60% | +2,15 |
+| 2021 | 85,98% | 89,89% | -3,91 |
+| 2022 | 94,74% | 89,17% | +5,57 |
+| 2023 | 90,82% | 88,63% | +2,19 |
+| 2024 | 87,14% | 91,77% | -4,63 |
+
+Maceió ficou **acima da média das capitais em 3 dos 5 anos** comparáveis (2020, 2022, 2023), com o melhor desempenho relativo em 2022 (+5,57 pontos) e o pior em 2024 (-4,63 pontos). Não há uma tendência clara e contínua de melhora ou piora — a taxa oscila de forma considerável ano a ano.
+
+### Observação sobre 2025
+
+Maceió está entre as **15 capitais que ainda não haviam reportado dados de 2025** ao Siconfi no momento desta análise (apenas 11 das 26 capitais tinham dados disponíveis).
+
+## Limitações e próximos passos
+
+- A análise foi feita no nível de **função**; um aprofundamento por **subfunção** (por exemplo, dentro de Saúde, comparar Atenção Básica vs. Assistência Hospitalar) ficaria como próximo passo.
+- Não foi feita normalização por **população** (per capita) nesta versão — os valores absolutos favorecem a comparação direta de execução (%), mas não de volume de gasto.
