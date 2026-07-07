@@ -1,5 +1,51 @@
-﻿venv/
-dados_extraidos/
-__pycache__/
+﻿# ==========================================================================
+# .gitignore — Desafio Análise de Dados | Sefaz Maceió
+# ==========================================================================
+
+# --- Arquivos de configuração de IA/assistente ---
+.assistant/
+*.local.md
+.mcp.json
+
+# --- Segredos e credenciais ---
+.env
+.env.*
+*.key
+*.pem
+*.p12
+credentials*
+secrets*
+*.local
+
+# --- Python ---
+.venv/
+venv/
+env/
+.python-version
 *.pyc
+*.py[cod]
+*.egg-info/
+__pycache__/
 .ipynb_checkpoints/
+
+# --- Editores ---
+.vscode/
+.idea/
+*.swp
+
+# --- Sistema ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================================================
+# IMPORTANTE: os arquivos .zip precisam ser descompactados (por código).
+#
+# Sobre as SAÍDAS do processamento (dados extraídos, parquet, gráficos):
+# fica a seu critério versionar ou não. Para NÃO subir os arquivos
+# intermediários/gerados, descomente as linhas abaixo:
+#
+# dados_extraidos/
+# *.parquet
+# saidas/
+# ==========================================================================
