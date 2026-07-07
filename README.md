@@ -350,9 +350,6 @@ Entre no nosso grupo do WhatsApp para tirar dúvidas, trocar dicas e fazer netwo
 Boa sorte e bom desafio! 🚀
 **José Gonçalves Jr - Head de Dados - Sefaz Maceió**
 
-
----
-
 ---
 
 # 📊 Minha Solução — Eduardo Da Silva Duarte

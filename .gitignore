@@ -39,5 +39,5 @@ Thumbs.db
 desktop.ini
 
 dados_extraidos/
-# *.parquet
+*.parquet
 # saidas/

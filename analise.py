@@ -67,3 +67,49 @@ comparativo["diferenca"] = comparativo["Maceió"] - comparativo["Média das capi
 print("\nEvolução da taxa de execução: Maceió vs média das capitais")
 print(comparativo)
 
+import matplotlib
+matplotlib.use("Agg")  # backend sem interface gráfica, só para salvar arquivos
+import matplotlib.pyplot as plt
+
+# ==========================================================================
+# Gráfico 1: Ranking de taxa de execução média por capital
+# ==========================================================================
+
+taxa_media_capital = (
+    df_execucao.groupby("Instituição")["taxa_execucao"]
+    .mean()
+    .sort_values(ascending=True)
+)
+
+# Simplifica os nomes (remove "Prefeitura Municipal de")
+nomes_curtos = taxa_media_capital.index.str.replace(
+    "Prefeitura Municipal d[eo] ", "", regex=True
+)
+
+plt.figure(figsize=(10, 10))
+plt.barh(nomes_curtos, taxa_media_capital.values, color="#2c7fb8")
+plt.xlabel("Taxa de Execução Financeira Média (%)")
+plt.title("Taxa de Execução Financeira por Capital (2020-2025)")
+plt.tight_layout()
+plt.savefig("grafico_ranking_capitais.png", dpi=150)
+print("\nGráfico salvo: grafico_ranking_capitais.png")
+plt.close()
+
+# ==========================================================================
+# Gráfico 2: Evolução de Maceió vs média das capitais
+# ==========================================================================
+
+comparativo_sem_2025 = comparativo.drop(index=2025, errors="ignore")
+
+plt.figure(figsize=(8, 5))
+plt.plot(comparativo_sem_2025.index, comparativo_sem_2025["Maceió"], marker="o", label="Maceió", color="#e34a33")
+plt.plot(comparativo_sem_2025.index, comparativo_sem_2025["Média das capitais"], marker="o", label="Média das capitais", color="#2c7fb8")
+plt.ylabel("Taxa de Execução Financeira (%)")
+plt.xlabel("Ano")
+plt.title("Evolução da Taxa de Execução: Maceió vs Média das Capitais")
+plt.legend()
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.savefig("grafico_evolucao_maceio.png", dpi=150)
+print("Gráfico salvo: grafico_evolucao_maceio.png")
+plt.close()
