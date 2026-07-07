@@ -64,3 +64,6 @@ print("\nTipo da coluna Valor:", df_consolidado["Valor"].dtype)
 
 print("\nDistribuição por tipo de conta:")
 print(df_consolidado["tipo_conta"].value_counts())
+
+df_consolidado.to_parquet("finbra_consolidado.parquet", index=False)
+print("\nArquivo salvo: finbra_consolidado.parquet")
