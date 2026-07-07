@@ -43,3 +43,27 @@ print(
 # Salva o resultado para consultas futuras
 df_execucao.to_parquet("execucao_financeira.parquet", index=False)
 print("\nArquivo salvo: execucao_financeira.parquet")
+
+# ==========================================================================
+# Evolução temporal: Maceió vs média das capitais
+# ==========================================================================
+
+# Taxa de execução média por ano, só para Maceió
+maceio_por_ano = (
+    df_execucao[df_execucao["Instituição"].str.contains("Maceió")]
+    .groupby("ano")["taxa_execucao"]
+    .mean()
+)
+
+# Taxa de execução média por ano, considerando TODAS as capitais
+media_capitais_por_ano = df_execucao.groupby("ano")["taxa_execucao"].mean()
+
+comparativo = pd.DataFrame({
+    "Maceió": maceio_por_ano,
+    "Média das capitais": media_capitais_por_ano,
+})
+comparativo["diferenca"] = comparativo["Maceió"] - comparativo["Média das capitais"]
+
+print("\nEvolução da taxa de execução: Maceió vs média das capitais")
+print(comparativo)
+
